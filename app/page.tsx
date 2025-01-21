@@ -265,7 +265,8 @@ export default function Home() {
           {bookmarks.map((bookmark) => (
             <div
               key={bookmark.id}
-              className="aspect-square p-4 border rounded-lg hover:shadow-md transition-shadow bg-white flex flex-col"
+              className="aspect-square p-4 border rounded-lg hover:shadow-md transition-shadow bg-white flex flex-col cursor-pointer"
+              onClick={(e) => handleBookmarkClick(bookmark.url, e)}
             >
               <div className="flex flex-col h-full">
                 <div className="flex-1">
@@ -279,13 +280,7 @@ export default function Home() {
                     ) : (
                       <Bookmark className="h-6 w-6 text-blue-500" />
                     )}
-                    <a
-                      href={bookmark.url}
-                      onClick={(e) => handleBookmarkClick(bookmark.url, e)}
-                      className="font-medium hover:underline group inline-flex items-center"
-                    >
-                      <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
+                    <ExternalLink className="w-4 h-4 text-gray-400" />
                   </div>
                   <div className="text-center mb-2">
                     <h3 className="font-medium">{bookmark.title}</h3>
@@ -308,7 +303,10 @@ export default function Home() {
                   variant="ghost"
                   size="icon"
                   className="self-center"
-                  onClick={() => handleDeleteBookmark(bookmark.id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent bookmark opening when deleting
+                    handleDeleteBookmark(bookmark.id);
+                  }}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
